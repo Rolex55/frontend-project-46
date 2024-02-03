@@ -1,5 +1,4 @@
-import union from 'lodash';
-import isPlainObject from 'lodash';
+import _ from 'lodash';
 import { readFileSync } from 'node:fs';
 import { resolve, extname, dirname } from 'node:path';
 import { load } from 'js-yaml';
@@ -40,11 +39,11 @@ const getObjectsFromFiles = (path1, path2) => {
 const getDifference = (obj1, obj2) => {
   const obj1Keys = Object.keys(obj1);
   const obj2Keys = Object.keys(obj2);
-  const keys = union(obj1Keys.concat(obj2Keys)).sort();
+  const keys = _.union(obj1Keys.concat(obj2Keys)).sort();
   const getDifferObj = (acc, key) => {
     if (
-      isPlainObject(obj1[key]) === true
-      || isPlainObject(obj2[key]) === true
+      _.isPlainObject(obj1[key]) === true
+      || _.isPlainObject(obj2[key]) === true
     ) {
       acc[key] = getDifference(obj1[key], obj2[key]);
     }
