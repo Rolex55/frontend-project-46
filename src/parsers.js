@@ -23,7 +23,7 @@ const toParseFile = (pathToFile) => {
       break;
     default:
       throw new Error(
-        `Unknown extension of the path: '${extname(pathToFile)}'!`
+        `Unknown extension of the path: '${extname(pathToFile)}'!`,
       );
   }
   return fileObject;

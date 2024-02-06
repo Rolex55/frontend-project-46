@@ -7,8 +7,8 @@ const getDifference = (obj1, obj2) => {
   const keys = _.union(obj1Keys.concat(obj2Keys)).sort();
   const getDifferObj = (acc, key) => {
     if (
-      _.isPlainObject(obj1[key]) === true ||
-      _.isPlainObject(obj2[key]) === true
+      _.isPlainObject(obj1[key]) === true
+      || _.isPlainObject(obj2[key]) === true
     ) {
       acc[`  ${key}`] = getDifference(obj1[key], obj2[key]);
     } else if (obj1[key] !== obj2[key]) {
