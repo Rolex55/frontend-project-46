@@ -9,9 +9,12 @@ program
   .version('1.0.0')
   .description('Compares two configuration files and shows a difference.')
   .option('-f, --format <type>', 'output format')
+  .option('--formatter <type>', 'choose format-function', 'stylish')
   .arguments('<filepath1> <filepath2>')
   .action((filepath1, filepath2) => {
-    console.log(genDiffFunc(filepath1, filepath2));
+    if (program.opts().formatter === 'stylish') {
+      console.log(genDiffFunc(filepath1, filepath2));
+    }
   });
 
 program.parse();

@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for gendiff.js</title>
+    <title>Code coverage report for parsers.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="prettify.css" />
     <link rel="stylesheet" href="base.css" />
@@ -19,20 +19,20 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="index.html">All files</a> gendiff.js</h1>
+        <h1><a href="index.html">All files</a> parsers.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">93.75% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>21/21</span>
+                <span class='fraction'>15/16</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">60% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>11/11</span>
+                <span class='fraction'>3/5</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">93.75% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>21/21</span>
+                <span class='fraction'>15/16</span>
             </div>
         
             
@@ -98,36 +98,32 @@
 <a name='L33'></a><a href='#L33'>33</a>
 <a name='L34'></a><a href='#L34'>34</a>
 <a name='L35'></a><a href='#L35'>35</a>
-<a name='L36'></a><a href='#L36'>36</a>
-<a name='L37'></a><a href='#L37'>37</a>
-<a name='L38'></a><a href='#L38'>38</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L36'></a><a href='#L36'>36</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">8x</span>
-<span class="cline-any cline-yes">8x</span>
-<span class="cline-any cline-yes">8x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">8x</span>
-<span class="cline-any cline-yes">27x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">21x</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">12x</span>
-<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">27x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">8x</span>
-<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
@@ -137,43 +133,41 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import _ from 'lodash';
-import getObjectsFromFiles from './parsers.js';
-import stylish from './stylish.js';
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { readFileSync } from 'node:fs';
+import { resolve, extname } from 'node:path';
+import { cwd } from 'node:process';
+import { load } from 'js-yaml';
 &nbsp;
-const genDiff = (obj1, obj2) =&gt; {
-  const obj1Keys = Object.keys(obj1);
-  const obj2Keys = Object.keys(obj2);
-  const keys = _.union(obj1Keys, obj2Keys).sort();
-&nbsp;
-  const getDifferObj = (acc, key) =&gt; {
-    if (
-      _.isPlainObject(obj1[key]) === true
-      &amp;&amp; _.isPlainObject(obj2[key]) === true
-    ) {
-      acc[key] = genDiff(obj1[key], obj2[key]);
-    } else if (!Object.hasOwn(obj1, key)) {
-      acc[key] = 'added';
-    } else if (!Object.hasOwn(obj2, key)) {
-      acc[key] = 'deleted';
-    } else if (obj1[key] !== obj2[key]) {
-      acc[key] = 'changed';
-    } else {
-      acc[key] = 'unchanged';
-    }
-    return acc;
-  };
-  const result = keys.reduce(getDifferObj, {});
-  return [result, obj1, obj2];
+const getPathToFile = (path) =&gt; {
+  const pathToFile = resolve(cwd(), path);
+  return pathToFile;
 };
 &nbsp;
-const genDiffFunc = (path1, path2, formatter = stylish) =&gt; {
-  const [obj1, obj2] = getObjectsFromFiles(path1, path2);
-  const objDiffer = genDiff(obj1, obj2);
-  return formatter(objDiffer);
+const toParseFile = (pathToFile) =&gt; {
+  const riddenFile = readFileSync(pathToFile, 'utf-8');
+  let fileObject;
+  switch (extname(pathToFile)) {
+    case '.json':
+      fileObject = JSON.parse(riddenFile);
+      break;
+    case '.yml' || <span class="branch-1 cbranch-no" title="branch not covered" >'.yaml':</span>
+      fileObject = load(riddenFile);
+      break;
+<span class="branch-2 cbranch-no" title="branch not covered" >    default:</span>
+<span class="cstat-no" title="statement not covered" >      throw new Error(</span>
+        `Unknown extension of the path: '${extname(pathToFile)}'!`,
+      );
+  }
+  return fileObject;
 };
 &nbsp;
-export default genDiffFunc;
+const getObjectsFromFiles = (path1, path2) =&gt; {
+  const obj1 = toParseFile(getPathToFile(path1));
+  const obj2 = toParseFile(getPathToFile(path2));
+  return [obj1, obj2];
+};
+&nbsp;
+export default getObjectsFromFiles;
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->

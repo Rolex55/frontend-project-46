@@ -9,9 +9,16 @@ const __dirname = dirname(__filename);
 const getFixturePath = (filename) => resolve(__dirname, '..', '__fixtures__', filename);
 const readFile = (filename) => readFileSync(getFixturePath(filename), 'utf-8');
 
-test('genDiff', () => {
+test('genDiff JSON-file', () => {
   const result = readFile('expectedfile12.json').replace(/[",]/g, '').trim();
   expect(
-    genDiffFunc('../__fixtures__/file1.json', '../__fixtures__/file2.json'),
+    genDiffFunc('__fixtures__/file1.json', '__fixtures__/file2.json'),
+  ).toEqual(result);
+});
+
+test('genDiff YML-file', () => {
+  const result = readFile('expectedfile12.yml').replace(/[",]/g, '').trim();
+  expect(
+    genDiffFunc('__fixtures__/file1.yml', '__fixtures__/file2.yml'),
   ).toEqual(result);
 });

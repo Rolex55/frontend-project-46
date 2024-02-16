@@ -1,5 +1,10 @@
 name: 'Aron'
 age: 80
-children: false
+children:
+  name:
+    fist: 'Gar'
+  age2:
+    second: 9
+  age1: 5
 family: 'Green'
 city: 'New York'

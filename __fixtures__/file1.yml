@@ -1,4 +1,7 @@
 name: 'Mary'
-children: true
 age: 69
+children:
+  name:
+    fist: 'Rose'
+  age1: 5
 family: 'Green'

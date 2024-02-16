@@ -1,0 +1,18 @@
+{
+  - age: 69
+  + age: 80
+    children: {
+        age1: 5
+      + age2: {
+            second: 9
+        }
+        name: {
+          - fist: "Rose"
+          + fist: "Gar"
+        }
+    }
+  + city: "New York"
+    family: "Green"
+  - name: "Mary"
+  + name: "Aron"
+}

@@ -1,13 +1,10 @@
 import { readFileSync } from 'node:fs';
-import { resolve, extname, dirname } from 'node:path';
+import { resolve, extname } from 'node:path';
+import { cwd } from 'node:process';
 import { load } from 'js-yaml';
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
 const getPathToFile = (path) => {
-  const pathToFile = resolve(__dirname, path);
+  const pathToFile = resolve(cwd(), path);
   return pathToFile;
 };
 
