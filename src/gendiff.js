@@ -5,7 +5,7 @@ const genDiff = (obj1, obj2) => {
   const obj2Keys = Object.keys(obj2);
   const keys = _.sortBy(_.union(obj1Keys, obj2Keys));
 
-  const getDifferObj = (acc, key) => {
+  const addChanges = (acc, key) => {
     if (
       _.isPlainObject(obj1[key]) === true
       && _.isPlainObject(obj2[key]) === true
@@ -22,7 +22,7 @@ const genDiff = (obj1, obj2) => {
     }
     return acc;
   };
-  const result = keys.reduce(getDifferObj, {});
+  const result = keys.reduce(addChanges, {});
   return [result, obj1, obj2];
 };
 

@@ -31,22 +31,16 @@ const plain = ([difObj, obj1, obj2]) => {
       if (_.isArray(changes)) {
         return iter(changes[0]);
       }
-      let path1;
-      let value1;
-      let path2;
-      let value2;
+      const path1 = getPathToSearchKey(obj1, key);
+      const path2 = getPathToSearchKey(obj2, key);
+      const value1 = convertValue(_.get(obj1, path1, 'default'));
+      const value2 = convertValue(_.get(obj2, path2, 'default'));
       switch (changes) {
         case 'added':
-          path2 = getPathToSearchKey(obj2, key);
-          value2 = convertValue(_.get(obj2, path2));
           return `Property '${path2}' was added with value: ${value2}`;
         case 'deleted':
-          path1 = getPathToSearchKey(obj1, key);
           return `Property '${path1}' was removed`;
         case 'changed':
-          path1 = getPathToSearchKey(obj1, key);
-          value1 = convertValue(_.get(obj1, path1));
-          value2 = convertValue(_.get(obj2, path1));
           return `Property '${path1}' was updated. From ${value1} to ${value2}`;
         default:
           return [];

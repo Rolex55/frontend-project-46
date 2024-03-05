@@ -1,40 +1,31 @@
 import _ from 'lodash';
 
+const signs = { deleted: '- ', added: '+ ', unchanged: '  ' };
+
 const addSign = ([comrapeObj, obj1, obj2]) => {
-  let sign = '';
-  let value;
   const iter = (acc, key) => {
     if (typeof comrapeObj[key] === 'object') {
-      sign = '  ';
-      acc[`${sign}${key}`] = addSign([...comrapeObj[key]]);
+      acc[`${signs.unchanged}${key}`] = addSign([...comrapeObj[key]]);
       return acc;
     }
     // eslint-disable-next-line default-case
     switch (comrapeObj[key]) {
       case 'deleted':
-        sign = '- ';
-        value = obj1[key];
-        break;
+        acc[`${signs.deleted}${key}`] = obj1[key];
+        return acc;
       case 'added':
-        sign = '+ ';
-        value = obj2[key];
-        break;
+        acc[`${signs.added}${key}`] = obj2[key];
+        return acc;
       case 'unchanged':
-        sign = '  ';
-        value = obj1[key];
-        break;
+        acc[`${signs.unchanged}${key}`] = obj1[key];
+        return acc;
       case 'changed':
-        sign = '- ';
-        value = obj1[key];
-        acc[`${sign}${key}`] = value;
-        sign = '+ ';
-        value = obj2[key];
-        break;
+        acc[`${signs.deleted}${key}`] = obj1[key];
+        acc[`${signs.added}${key}`] = obj2[key];
+        return acc;
       default:
         throw new Error(`Unknown changes: '${comrapeObj[key]}'!`);
     }
-    acc[`${sign}${key}`] = value;
-    return acc;
   };
   const keys = Object.keys(comrapeObj);
   const result = keys.reduce(iter, {});
@@ -53,14 +44,16 @@ const stringify = (value, replacer = ' ', spacesCount = 4) => {
       const bracketIndentFunc = replacer.repeat(indentBrackSize);
       return [currentIndentFunc, bracketIndentFunc];
     };
-    let [currentIndent, bracketIndent] = getIndent(2);
+    const leftSpace = 2;
+    let [currentIndent, bracketIndent] = getIndent(leftSpace);
     const lines = Object.entries(currentValue).map(([key, val]) => {
       if (
         !key.startsWith('+')
         && !key.startsWith('-')
         && !key.startsWith(' ')
       ) {
-        [currentIndent, bracketIndent] = getIndent(0);
+        const newleftSpace = 0;
+        [currentIndent, bracketIndent] = getIndent(newleftSpace);
       }
       return `${currentIndent}${key}: ${iter(val, depth + 1)}`;
     });
@@ -71,9 +64,6 @@ const stringify = (value, replacer = ' ', spacesCount = 4) => {
   return iter(value, 1);
 };
 
-const stylish = (objDiff) => {
-  const result = stringify(addSign(objDiff));
-  return result;
-};
+const stylish = (objDiff) => stringify(addSign(objDiff));
 
 export default stylish;
