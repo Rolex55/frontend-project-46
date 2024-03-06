@@ -10,17 +10,21 @@ const getDifference = (obj1, obj2) => {
       _.isPlainObject(obj1[key]) === true
       && _.isPlainObject(obj2[key]) === true
     ) {
-      acc[key] = getDifference(obj1[key], obj2[key]);
-    } else if (!Object.hasOwn(obj1, key)) {
-      acc[key] = { changes: 'added', value: obj2[key] };
-    } else if (!Object.hasOwn(obj2, key)) {
-      acc[key] = { changes: 'deleted', value: obj1[key] };
-    } else if (obj1[key] !== obj2[key]) {
-      acc[key] = { changes: 'changed', value1: obj1[key], value2: obj2[key] };
-    } else {
-      acc[key] = { changes: 'unchanged', value: obj1[key] };
+      return { ...acc, [key]: getDifference(obj1[key], obj2[key]) };
     }
-    return { ...acc };
+    if (!Object.hasOwn(obj1, key)) {
+      return { ...acc, [key]: { changes: 'added', value: obj2[key] } };
+    }
+    if (!Object.hasOwn(obj2, key)) {
+      return { ...acc, [key]: { changes: 'deleted', value: obj1[key] } };
+    }
+    if (obj1[key] !== obj2[key]) {
+      return {
+        ...acc,
+        [key]: { changes: 'changed', value1: obj1[key], value2: obj2[key] },
+      };
+    }
+    return { ...acc, [key]: { changes: 'unchanged', value: obj1[key] } };
   };
   const result = keys.reduce(addChanges, {});
   return { ...result };

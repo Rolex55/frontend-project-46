@@ -5,20 +5,26 @@ const signs = { deleted: '- ', added: '+ ', unchanged: '  ' };
 const addSign = (differObject) => {
   const iter = (acc, key) => {
     if (!Object.hasOwn(differObject[key], 'changes')) {
-      acc[`${signs.unchanged}${key}`] = addSign(differObject[key]);
-      return { ...acc };
+      return {
+        ...acc,
+        [`${signs.unchanged}${key}`]: addSign(differObject[key]),
+      };
     }
     const keyChange = differObject[key].changes;
     switch (keyChange) {
       case 'deleted':
       case 'added':
       case 'unchanged':
-        acc[`${signs[keyChange]}${key}`] = differObject[key].value;
-        return { ...acc };
+        return {
+          ...acc,
+          [`${signs[keyChange]}${key}`]: differObject[key].value,
+        };
       case 'changed':
-        acc[`${signs.deleted}${key}`] = differObject[key].value1;
-        acc[`${signs.added}${key}`] = differObject[key].value2;
-        return { ...acc };
+        return {
+          ...acc,
+          [`${signs.deleted}${key}`]: differObject[key].value1,
+          [`${signs.added}${key}`]: differObject[key].value2,
+        };
       default:
         throw new Error(`Unknown changes: '${keyChange}'!`);
     }
