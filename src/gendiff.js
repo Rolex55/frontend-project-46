@@ -20,7 +20,7 @@ const getDifference = (obj1, obj2) => {
     } else {
       acc[key] = { changes: 'unchanged', value: obj1[key] };
     }
-    return acc;
+    return { ...acc };
   };
   const result = keys.reduce(addChanges, {});
   return { ...result };
