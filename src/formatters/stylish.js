@@ -2,32 +2,28 @@ import _ from 'lodash';
 
 const signs = { deleted: '- ', added: '+ ', unchanged: '  ' };
 
-const addSign = ([comrapeObj, obj1, obj2]) => {
+const addSign = (differObject) => {
   const iter = (acc, key) => {
-    if (typeof comrapeObj[key] === 'object') {
-      acc[`${signs.unchanged}${key}`] = addSign([...comrapeObj[key]]);
+    if (!Object.hasOwn(differObject[key], 'changes')) {
+      acc[`${signs.unchanged}${key}`] = addSign(differObject[key]);
       return acc;
     }
-    // eslint-disable-next-line default-case
-    switch (comrapeObj[key]) {
+    const keyChange = differObject[key].changes;
+    switch (keyChange) {
       case 'deleted':
-        acc[`${signs.deleted}${key}`] = obj1[key];
-        return acc;
       case 'added':
-        acc[`${signs.added}${key}`] = obj2[key];
-        return acc;
       case 'unchanged':
-        acc[`${signs.unchanged}${key}`] = obj1[key];
+        acc[`${signs[keyChange]}${key}`] = differObject[key].value;
         return acc;
       case 'changed':
-        acc[`${signs.deleted}${key}`] = obj1[key];
-        acc[`${signs.added}${key}`] = obj2[key];
+        acc[`${signs.deleted}${key}`] = differObject[key].value1;
+        acc[`${signs.added}${key}`] = differObject[key].value2;
         return acc;
       default:
-        throw new Error(`Unknown changes: '${comrapeObj[key]}'!`);
+        throw new Error(`Unknown changes: '${keyChange}'!`);
     }
   };
-  const keys = Object.keys(comrapeObj);
+  const keys = Object.keys(differObject);
   const result = keys.reduce(iter, {});
   return result;
 };

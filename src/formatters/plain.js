@@ -1,23 +1,5 @@
 import _ from 'lodash';
 
-const getPathToSearchKey = (object, searchKey) => {
-  const iter = (value, ancestry) => {
-    if (typeof value !== 'object' || value === null) {
-      return [];
-    }
-    if (value[searchKey] !== undefined) {
-      return [...ancestry, searchKey];
-    }
-    const keys = Object.keys(value);
-    const result = keys.flatMap((key) => {
-      const newancestry = ancestry.concat(key);
-      return iter(value[key], newancestry);
-    });
-    return result;
-  };
-  return iter(object, []).join('.');
-};
-
 const convertValue = (value) => {
   if (_.isPlainObject(value)) {
     return '[complex value]';
@@ -25,30 +7,33 @@ const convertValue = (value) => {
   return _.isString(value) ? `'${value}'` : value;
 };
 
-const plain = ([difObj, obj1, obj2]) => {
-  const iter = (diffObject) => {
-    const result = Object.entries(diffObject).flatMap(([key, changes]) => {
-      if (_.isArray(changes)) {
-        return iter(changes[0]);
+const plain = (compareObj) => {
+  const iter = (obj, path) => {
+    const result = Object.entries(obj).flatMap(([key, value]) => {
+      const newPath = path.concat(key);
+      const newPathStr = newPath.join('.');
+      if (!Object.hasOwn(value, 'changes')) {
+        return iter(value, newPath);
       }
-      const path1 = getPathToSearchKey(obj1, key);
-      const path2 = getPathToSearchKey(obj2, key);
-      const value1 = convertValue(_.get(obj1, path1, 'default'));
-      const value2 = convertValue(_.get(obj2, path2, 'default'));
-      switch (changes) {
+      switch (value.changes) {
         case 'added':
-          return `Property '${path2}' was added with value: ${value2}`;
+          return `Property '${newPathStr}' was added with value: ${convertValue(
+            value.value,
+          )}`;
         case 'deleted':
-          return `Property '${path1}' was removed`;
+          return `Property '${newPathStr}' was removed`;
         case 'changed':
-          return `Property '${path1}' was updated. From ${value1} to ${value2}`;
+          return `Property '${newPathStr}' was updated. From ${convertValue(
+            value.value1,
+          )} to ${convertValue(value.value2)}`;
         default:
+          newPath.pop();
           return [];
       }
     });
     return result.join('\n');
   };
-  return iter(difObj);
+  return iter(compareObj, []);
 };
 
 export default plain;

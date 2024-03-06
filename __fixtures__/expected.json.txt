@@ -1,143 +1,80 @@
-[
- {
-  "common": [
-   {
-    "follow": "added",
-    "setting1": "unchanged",
-    "setting2": "deleted",
-    "setting3": "changed",
-    "setting4": "added",
-    "setting5": "added",
-    "setting6": [
-     {
-      "doge": [
-       {
-        "wow": "changed"
-       },
-       {
-        "wow": ""
-       },
-       {
-        "wow": "so much"
-       }
-      ],
-      "key": "unchanged",
-      "ops": "added"
-     },
-     {
-      "key": "value",
-      "doge": {
-       "wow": ""
-      }
-     },
-     {
-      "key": "value",
-      "ops": "vops",
-      "doge": {
-       "wow": "so much"
-      }
-     }
-    ]
-   },
-   {
-    "setting1": "Value 1",
-    "setting2": 200,
-    "setting3": true,
-    "setting6": {
-     "key": "value",
-     "doge": {
-      "wow": ""
-     }
-    }
-   },
-   {
-    "follow": false,
-    "setting1": "Value 1",
-    "setting3": null,
-    "setting4": "blah blah",
-    "setting5": {
-     "key5": "value5"
-    },
-    "setting6": {
-     "key": "value",
-     "ops": "vops",
-     "doge": {
-      "wow": "so much"
-     }
-    }
+{
+ "common": {
+  "follow": {
+   "changes": "added",
+   "value": false
+  },
+  "setting1": {
+   "changes": "unchanged",
+   "value": "Value 1"
+  },
+  "setting2": {
+   "changes": "deleted",
+   "value": 200
+  },
+  "setting3": {
+   "changes": "changed",
+   "value1": true,
+   "value2": null
+  },
+  "setting4": {
+   "changes": "added",
+   "value": "blah blah"
+  },
+  "setting5": {
+   "changes": "added",
+   "value": {
+    "key5": "value5"
    }
-  ],
-  "group1": [
-   {
-    "baz": "changed",
-    "foo": "unchanged",
-    "nest": "changed"
-   },
-   {
-    "baz": "bas",
-    "foo": "bar",
-    "nest": {
-     "key": "value"
+  },
+  "setting6": {
+   "doge": {
+    "wow": {
+     "changes": "changed",
+     "value1": "",
+     "value2": "so much"
     }
    },
-   {
-    "foo": "bar",
-    "baz": "bars",
-    "nest": "str"
+   "key": {
+    "changes": "unchanged",
+    "value": "value"
+   },
+   "ops": {
+    "changes": "added",
+    "value": "vops"
    }
-  ],
-  "group2": "deleted",
-  "group3": "added"
+  }
  },
- {
-  "common": {
-   "setting1": "Value 1",
-   "setting2": 200,
-   "setting3": true,
-   "setting6": {
-    "key": "value",
-    "doge": {
-     "wow": ""
-    }
-   }
+ "group1": {
+  "baz": {
+   "changes": "changed",
+   "value1": "bas",
+   "value2": "bars"
   },
-  "group1": {
-   "baz": "bas",
-   "foo": "bar",
-   "nest": {
+  "foo": {
+   "changes": "unchanged",
+   "value": "bar"
+  },
+  "nest": {
+   "changes": "changed",
+   "value1": {
     "key": "value"
-   }
-  },
-  "group2": {
+   },
+   "value2": "str"
+  }
+ },
+ "group2": {
+  "changes": "deleted",
+  "value": {
    "abc": 12345,
    "deep": {
     "id": 45
    }
   }
  },
- {
-  "common": {
-   "follow": false,
-   "setting1": "Value 1",
-   "setting3": null,
-   "setting4": "blah blah",
-   "setting5": {
-    "key5": "value5"
-   },
-   "setting6": {
-    "key": "value",
-    "ops": "vops",
-    "doge": {
-     "wow": "so much"
-    }
-   }
-  },
-  "group1": {
-   "foo": "bar",
-   "baz": "bars",
-   "nest": "str"
-  },
-  "group3": {
+ "group3": {
+  "changes": "added",
+  "value": {
    "deep": {
     "id": {
      "number": 45
@@ -146,4 +83,4 @@
    "fee": 100500
   }
  }
-]
+}

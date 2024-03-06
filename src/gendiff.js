@@ -12,18 +12,18 @@ const getDifference = (obj1, obj2) => {
     ) {
       acc[key] = getDifference(obj1[key], obj2[key]);
     } else if (!Object.hasOwn(obj1, key)) {
-      acc[key] = 'added';
+      acc[key] = { changes: 'added', value: obj2[key] };
     } else if (!Object.hasOwn(obj2, key)) {
-      acc[key] = 'deleted';
+      acc[key] = { changes: 'deleted', value: obj1[key] };
     } else if (obj1[key] !== obj2[key]) {
-      acc[key] = 'changed';
+      acc[key] = { changes: 'changed', value1: obj1[key], value2: obj2[key] };
     } else {
-      acc[key] = 'unchanged';
+      acc[key] = { changes: 'unchanged', value: obj1[key] };
     }
     return acc;
   };
   const result = keys.reduce(addChanges, {});
-  return [result, obj1, obj2];
+  return result;
 };
 
 export default getDifference;
