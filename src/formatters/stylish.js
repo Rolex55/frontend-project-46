@@ -25,7 +25,7 @@ const addSign = (differObject) => {
   };
   const keys = Object.keys(differObject);
   const result = keys.reduce(iter, {});
-  return result;
+  return { ...result };
 };
 
 const stringify = (value, replacer = ' ', spacesCount = 4) => {
@@ -33,23 +33,22 @@ const stringify = (value, replacer = ' ', spacesCount = 4) => {
     if (!_.isObject(currentValue)) {
       return `${currentValue}`;
     }
-    const getIndent = (leftSpace) => {
+    const calcIdentFunc = (leftSpace) => {
       const indentSize = depth * spacesCount - leftSpace;
       const currentIndentFunc = replacer.repeat(indentSize);
       const indentBrackSize = (depth - 1) * spacesCount;
       const bracketIndentFunc = replacer.repeat(indentBrackSize);
       return [currentIndentFunc, bracketIndentFunc];
     };
-    const leftSpace = 2;
-    let [currentIndent, bracketIndent] = getIndent(leftSpace);
+    const [currentIndent, bracketIndent] = calcIdentFunc(2);
     const lines = Object.entries(currentValue).map(([key, val]) => {
       if (
         !key.startsWith('+')
         && !key.startsWith('-')
         && !key.startsWith(' ')
       ) {
-        const newleftSpace = 0;
-        [currentIndent, bracketIndent] = getIndent(newleftSpace);
+        const newCurrentIndent = calcIdentFunc(0)[0];
+        return `${newCurrentIndent}${key}: ${iter(val, depth + 1)}`;
       }
       return `${currentIndent}${key}: ${iter(val, depth + 1)}`;
     });

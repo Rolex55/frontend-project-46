@@ -26,8 +26,10 @@ const plain = (compareObj) => {
           return `Property '${newPathStr}' was updated. From ${convertValue(
             value.value1,
           )} to ${convertValue(value.value2)}`;
+        case 'unchanged':
+          newPath.splice(0, -1);
+          return [];
         default:
-          newPath.pop();
           return [];
       }
     });

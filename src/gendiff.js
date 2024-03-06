@@ -23,7 +23,7 @@ const getDifference = (obj1, obj2) => {
     return acc;
   };
   const result = keys.reduce(addChanges, {});
-  return result;
+  return { ...result };
 };
 
 export default getDifference;
