@@ -39,21 +39,22 @@ const stringify = (value, replacer = ' ', spacesCount = 4) => {
     if (!_.isObject(currentValue)) {
       return `${currentValue}`;
     }
-    const calcIdentFunc = (leftSpace) => {
+    const getIndents = (leftSpace = 2) => {
       const indentSize = depth * spacesCount - leftSpace;
       const currentIndentFunc = replacer.repeat(indentSize);
       const indentBrackSize = (depth - 1) * spacesCount;
       const bracketIndentFunc = replacer.repeat(indentBrackSize);
       return [currentIndentFunc, bracketIndentFunc];
     };
-    const [currentIndent, bracketIndent] = calcIdentFunc(2);
+    const [currentIndent, bracketIndent] = getIndents();
     const lines = Object.entries(currentValue).map(([key, val]) => {
       if (
         !key.startsWith('+')
         && !key.startsWith('-')
         && !key.startsWith(' ')
       ) {
-        const newCurrentIndent = calcIdentFunc(0)[0];
+        const newLeftSpace = 0;
+        const [newCurrentIndent] = getIndents(newLeftSpace);
         return `${newCurrentIndent}${key}: ${iter(val, depth + 1)}`;
       }
       return `${currentIndent}${key}: ${iter(val, depth + 1)}`;
