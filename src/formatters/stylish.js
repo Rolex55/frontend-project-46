@@ -31,7 +31,7 @@ const addSign = (differObject) => {
   };
   const keys = Object.keys(differObject);
   const result = keys.reduce(iter, {});
-  return { ...result };
+  return result;
 };
 
 const stringify = (value, replacer = ' ', spacesCount = 4) => {

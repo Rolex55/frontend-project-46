@@ -6,10 +6,7 @@ const getDifference = (obj1, obj2) => {
   const keys = _.sortBy(_.union(obj1Keys, obj2Keys));
 
   const addChanges = (acc, key) => {
-    if (
-      _.isPlainObject(obj1[key]) === true
-      && _.isPlainObject(obj2[key]) === true
-    ) {
+    if (_.isPlainObject(obj1[key]) && _.isPlainObject(obj2[key])) {
       return { ...acc, [key]: getDifference(obj1[key], obj2[key]) };
     }
     if (!Object.hasOwn(obj1, key)) {
@@ -27,7 +24,7 @@ const getDifference = (obj1, obj2) => {
     return { ...acc, [key]: { changes: 'unchanged', value: obj1[key] } };
   };
   const result = keys.reduce(addChanges, {});
-  return { ...result };
+  return result;
 };
 
 export default getDifference;
